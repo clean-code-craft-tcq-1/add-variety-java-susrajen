@@ -35,7 +35,9 @@ public class TypewiseAlertTest
 	 public void setup() throws InstantiationException, IllegalAccessException, ClassNotFoundException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
      	 
 	 when(mockNotifierFactory.getAlerterFactory(NotifierTarget.TO_CONSOLE)).thenReturn(mockBreachObserver);
- 
+	 when(mockNotifierFactory.getAlerterFactory(NotifierTarget.TO_EMAIL)).thenReturn(mockBreachObserver);
+	 when(mockNotifierFactory.getAlerterFactory(NotifierTarget.TO_ALL)).thenReturn(mockBreachObserver);
+	 when(mockNotifierFactory.getAlerterFactory(NotifierTarget.TO_CONTROLLER)).thenReturn(mockBreachObserver);
 	 }
 
 	@Test
@@ -52,8 +54,32 @@ public class TypewiseAlertTest
     }
     
     @Test
-    public void checkAndAlertTest() throws InstantiationException, IllegalAccessException, ClassNotFoundException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+    public void checkAndAlertConsoleTest() throws InstantiationException, IllegalAccessException, ClassNotFoundException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
     	IBreachObserver breachObserver = mockNotifierFactory.getAlerterFactory(NotifierTarget.TO_CONSOLE);
+    	BatteryCharacter batteryCharacter = new BatteryCharacter();
+    	batteryCharacter.coolingType = CoolingType.MED_ACTIVE_COOLING;
+    	TypewiseAlert.checkAndAlert(breachObserver, batteryCharacter, 45);
+    }
+    
+    @Test
+    public void checkAndAlertAllTargetsTest() throws InstantiationException, IllegalAccessException, ClassNotFoundException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+    	IBreachObserver breachObserver = mockNotifierFactory.getAlerterFactory(NotifierTarget.TO_ALL);
+    	BatteryCharacter batteryCharacter = new BatteryCharacter();
+    	batteryCharacter.coolingType = CoolingType.MED_ACTIVE_COOLING;
+    	TypewiseAlert.checkAndAlert(breachObserver, batteryCharacter, 45);
+    }
+    
+    @Test
+    public void checkAndAlertControllerTest() throws InstantiationException, IllegalAccessException, ClassNotFoundException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+    	IBreachObserver breachObserver = mockNotifierFactory.getAlerterFactory(NotifierTarget.TO_CONTROLLER);
+    	BatteryCharacter batteryCharacter = new BatteryCharacter();
+    	batteryCharacter.coolingType = CoolingType.MED_ACTIVE_COOLING;
+    	TypewiseAlert.checkAndAlert(breachObserver, batteryCharacter, 45);
+    }
+    
+    @Test
+    public void checkAndAlertEmailTest() throws InstantiationException, IllegalAccessException, ClassNotFoundException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+    	IBreachObserver breachObserver = mockNotifierFactory.getAlerterFactory(NotifierTarget.TO_EMAIL);
     	BatteryCharacter batteryCharacter = new BatteryCharacter();
     	batteryCharacter.coolingType = CoolingType.MED_ACTIVE_COOLING;
     	TypewiseAlert.checkAndAlert(breachObserver, batteryCharacter, 45);
